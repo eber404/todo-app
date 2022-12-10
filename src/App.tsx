@@ -1,73 +1,63 @@
-import React, { useState } from "react";
-
-import "./App.css";
-import { useTodo } from "./useTodo";
+import "./App.css"
+import { Todo } from "./todo"
+import { useTodo } from "./useTodo"
 
 function App() {
-  const { todos, addTodo, deleteTodo } = useTodo();
-  const [todoValue, setTodoValue] = useState("");
+  const { todos, addTodo, deleteTodo } = useTodo()
 
-  const handleOnChange = (e: any) => {
-    setTodoValue(e.target.value);
-  };
+  const handleSubmit = async (e: any) => {
+    console.log("e =>", e)
+    e.preventDefault()
 
-  const handleEnter = (e: any) => {
-    const ENTER_KEY_CODE = 13;
+    const form = new FormData(e.target)
+    const formData = Object.fromEntries(form.entries())
 
-    if (e.keyCode === ENTER_KEY_CODE) {
-      addTodo(todoValue);
-      return cleanFields();
-    }
-  };
+    const todo = Todo.new({
+      name: formData.name.toString(),
+      startAt: new Date(formData.startAt.toString()),
+      description: formData.description.toString(),
+    })
 
-  const handleClick = () => {
-    addTodo(todoValue);
-    cleanFields();
-  };
-
-  const cleanFields = () => {
-    setTodoValue("");
-  };
-
-  const handleDelete = (todo: string) => {
-    deleteTodo(todo);
-  };
+    await addTodo(todo)
+  }
 
   return (
     <div className="container">
       <div className="form-box">
-        <div className="form">
+        <div className="form" onSubmit={handleSubmit}>
+          <input className="input" name="name" placeholder="name" />
+          <textarea
+            className="input"
+            name="description"
+            placeholder="description"
+          />
           <input
             className="input"
-            id="todo"
-            name="todo"
-            value={todoValue}
-            onChange={handleOnChange}
-            onKeyDown={handleEnter}
-            placeholder="levar o lixo para fora..."
+            type="date"
+            name="startAt"
+            placeholder="start date"
           />
-          <button className="button" type="button" onClick={handleClick}>
+          <button className="button" type="submit">
             add todo
           </button>
         </div>
         <div className="todo-list">
           <ul>
             {todos.map((todo) => (
-              <li className="todo-list-item" key={todo}>
-                <span>{todo}</span>{" "}
-                <button
-                  className="delete-button"
-                  onClick={() => handleDelete(todo)}
+              <li className="todo-list-item" key={todo.id}>
+                <span
+                  title={`${todo.description} @ ${todo.startAt.toDateString()}`}
                 >
-                  x
-                </button>
+                  {todo.name}
+                </span>{" "}
+                <button className="delete-button">x</button>
               </li>
             ))}
           </ul>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
