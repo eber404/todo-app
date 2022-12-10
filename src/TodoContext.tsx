@@ -7,6 +7,7 @@ interface TodoContextState {
   todos: Todo[]
   addTodo: (todo: Todo) => Promise<void>
   deleteTodo: (id: string) => Promise<void>
+  toggleDone: (id: string) => Promise<void>
 }
 
 interface TodoProviderProps {
@@ -31,12 +32,24 @@ export function TodoProvider({ children, todoRepository }: TodoProviderProps) {
     setTodos([...todos])
   }
 
+  const toggleDone = async (id: string) => {
+    const todo = todos.find((todo) => todo.id === id)
+
+    if (!todo) return console.log("[Todo] não pode ser completado.")
+
+    if (todo.isDone) {
+      return await todoRepository.markAsUndone(id)
+    }
+
+    await todoRepository.markAsDone(id)
+  }
+
   useEffect(() => {
     todoRepository.onNewTodo(onNewTodo)
   }, [""])
 
   return (
-    <TodoContext.Provider value={{ todos, addTodo, deleteTodo }}>
+    <TodoContext.Provider value={{ todos, addTodo, deleteTodo, toggleDone }}>
       {children}
     </TodoContext.Provider>
   )

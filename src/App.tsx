@@ -1,11 +1,12 @@
 import { useEffect } from "react"
+
 import "./App.css"
 import { If } from "./If"
 import { Todo } from "./todo"
 import { useTodo } from "./useTodo"
 
 function App() {
-  const { todos, addTodo, deleteTodo } = useTodo()
+  const { todos, addTodo, deleteTodo, toggleDone } = useTodo()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
@@ -40,12 +41,26 @@ function App() {
             <ul>
               {todos.map((todo) => (
                 <li className="todo-list-item" key={todo.id}>
-                  <span title={todo.description}>{todo.name}</span>{" "}
+                  <span title={todo.description}>
+                    <If
+                      condition={todo.isDone}
+                      elseComponent={<>{todo.name}</>}
+                    >
+                      <s>{todo.name}</s>
+                    </If>
+                  </span>
+
+                  <button
+                    className="delete-button"
+                    onClick={() => toggleDone(todo.id)}
+                  >
+                    ✅
+                  </button>
                   <button
                     className="delete-button"
                     onClick={() => deleteTodo(todo.id)}
                   >
-                    x
+                    ❌
                   </button>
                 </li>
               ))}
