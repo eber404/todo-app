@@ -1,7 +1,9 @@
 import { Todo } from "./todo"
 
+export type OnNewTodoCallback = (todo: Todo[]) => void
+
 export interface TodoRepository {
   add(todo: Todo): Promise<void>
-  list(): Promise<Todo[]>
   remove(id: string): Promise<void>
+  onNewTodo(callback: OnNewTodoCallback): Promise<void>
 }

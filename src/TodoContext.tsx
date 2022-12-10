@@ -27,14 +27,12 @@ export function TodoProvider({ children, todoRepository }: TodoProviderProps) {
     await todoRepository.remove(id)
   }
 
-  async function listTodos() {
-    const todos = await todoRepository.list()
-
-    setTodos(todos)
+  const onNewTodo = (todos: Todo[]) => {
+    setTodos([...todos])
   }
 
   useEffect(() => {
-    listTodos()
+    todoRepository.onNewTodo(onNewTodo)
   }, [""])
 
   return (

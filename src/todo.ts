@@ -1,34 +1,35 @@
-export class Todo {
-  public readonly id?: string
-  public readonly name: string
-  public readonly description?: string
-  public readonly startAt: Date
+interface TodoProps {
+  readonly id?: string
+  readonly name: string
+  readonly description?: string
+  readonly createdAt?: Date
+  readonly isDone?: boolean
+}
 
-  private constructor(props: Todo) {
-    this.id = props.id
-    this.name = props.name
-    this.description = props.description
-    this.startAt = props.startAt
+export class Todo {
+  public readonly id!: string
+  public readonly name!: string
+  public readonly description?: string
+  public readonly createdAt!: Date
+  public readonly isDone!: boolean
+
+  private constructor(props: TodoProps) {
+    Object.assign(this, props)
   }
 
-  public static new(props: Todo) {
-    const id = props.id ?? window.crypto.randomUUID()
-
+  public static new(props: TodoProps) {
     if (!props.name || props.name.length < 3) {
       throw new Error("O name do Todo deve ter ao menos 3 caracteres.")
     }
 
-    if (!props.startAt) {
-      throw new Error(
-        "Por favor, informe uma data de início válida para seu Todo."
-      )
-    }
+    const isDone = typeof props.isDone === "undefined" ? false : props.isDone
 
     return new Todo({
-      id,
+      id: props.id ?? window.crypto.randomUUID(),
       name: props.name,
-      startAt: props.startAt,
       description: props.description,
+      createdAt: props.createdAt ?? new Date(),
+      isDone,
     })
   }
 }
