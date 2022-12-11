@@ -1,17 +1,15 @@
-import { useEffect } from "react"
-
-import "./App.css"
-import { If } from "./If"
-import { Todo } from "./todo"
-import { useTodo } from "./useTodo"
+import "./styles/App.css"
+import { If } from "./components/If"
+import { Todo } from "./core/domain/entities/todo"
+import { useTodo } from "./hooks/useTodo"
 
 function App() {
   const { todos, addTodo, deleteTodo, toggleDone } = useTodo()
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const form = new FormData(e.target)
+    const form = new FormData(e.currentTarget)
     const formData = Object.fromEntries(form.entries())
 
     const todo = Todo.new({

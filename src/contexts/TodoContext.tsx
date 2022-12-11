@@ -1,7 +1,7 @@
 import { createContext, ReactElement, useEffect, useState } from "react"
 
-import { Todo } from "./todo"
-import { TodoRepository } from "./todo-repository"
+import { Todo } from "../core/domain/entities/todo"
+import { TodoRepository } from "../core/domain/repositories/todo-repository"
 
 interface TodoContextState {
   todos: Todo[]

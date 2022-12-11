@@ -11,8 +11,11 @@ import {
   doc,
 } from "firebase/firestore"
 
-import { Todo } from "./todo"
-import { OnNewTodoCallback, TodoRepository } from "./todo-repository"
+import { Todo } from "../../../domain/entities/todo"
+import {
+  OnNewTodoCallback,
+  TodoRepository,
+} from "../../../domain/repositories/todo-repository"
 import { db } from "./firebase"
 
 export class FirestoreTodoRepository implements TodoRepository {
@@ -51,7 +54,7 @@ export class FirestoreTodoRepository implements TodoRepository {
 
   async onNewTodo(callback: OnNewTodoCallback): Promise<void> {
     const q = query(this.collection, orderBy("createdAt", "desc"))
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    onSnapshot(q, (querySnapshot) => {
       if (querySnapshot.empty) return
 
       const todos = querySnapshot.docs.map((doc) =>

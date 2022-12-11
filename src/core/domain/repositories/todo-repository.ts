@@ -1,4 +1,4 @@
-import { Todo } from "./todo"
+import { Todo } from "../entities/todo"
 
 export type OnNewTodoCallback = (todo: Todo[]) => void
 

@@ -1,7 +1,7 @@
 import { ReactElement } from "react"
 
-import { FirestoreTodoRepository } from "./firestore-todo-repository"
-import { TodoProvider } from "./TodoContext"
+import { FirestoreTodoRepository } from "../core/infra/repositories/firebase/firestore-todo-repository"
+import { TodoProvider } from "../contexts/TodoContext"
 
 const todoRepository = new FirestoreTodoRepository()
 
