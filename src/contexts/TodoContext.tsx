@@ -28,7 +28,7 @@ export function TodoProvider({ children, todoRepository }: TodoProviderProps) {
     await todoRepository.remove(id)
   }
 
-  const onNewTodo = (todos: Todo[]) => {
+  const onUpdateTodo = (todos: Todo[]) => {
     setTodos([...todos])
   }
 
@@ -45,7 +45,7 @@ export function TodoProvider({ children, todoRepository }: TodoProviderProps) {
   }
 
   useEffect(() => {
-    todoRepository.onNewTodo(onNewTodo)
+    todoRepository.onUpdateTodo(onUpdateTodo)
   }, [""])
 
   return (
